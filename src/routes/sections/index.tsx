@@ -11,6 +11,7 @@ import { mainRoutes } from './main';
 import { authDemoRoutes } from './auth-demo';
 import { dashboardRoutes } from './dashboard';
 import { componentsRoutes } from './components';
+import { makankomAuthRoutes } from './makankom-auth'; // Add this line
 
 // ----------------------------------------------------------------------
 
@@ -40,6 +41,7 @@ export const routesSection: RouteObject[] = [
   // Auth
   ...authRoutes,
   ...authDemoRoutes,
+  ...makankomAuthRoutes, // Add this line
 
   // Dashboard
   ...dashboardRoutes,
