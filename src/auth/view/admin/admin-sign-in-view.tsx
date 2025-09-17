@@ -10,12 +10,12 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 
+import { useBoolean } from 'src/hooks/use-boolean';
+
 import { Iconify } from 'src/components/iconify';
 import { Form, Field } from 'src/components/hook-form';
 
 import { useAuthContext } from 'src/auth/hooks';
-
-import { useBoolean } from '../../../../src/hooks/use-boolean';
 
 // ----------------------------------------------------------------------
 
