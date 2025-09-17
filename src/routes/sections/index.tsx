@@ -11,7 +11,8 @@ import { mainRoutes } from './main';
 import { authDemoRoutes } from './auth-demo';
 import { dashboardRoutes } from './dashboard';
 import { componentsRoutes } from './components';
-import { makankomAuthRoutes } from './makankom-auth'; // Add this line
+import makankomAuthRoutes from './makankom-auth';
+import makankomPublicRoutes from './makankom-public';
 
 // ----------------------------------------------------------------------
 
@@ -21,14 +22,6 @@ const Page404 = lazy(() => import('src/pages/error/404'));
 export const routesSection: RouteObject[] = [
   {
     path: '/',
-    /**
-     * @skip homepage
-     * import { Navigate } from "react-router";
-     * import { CONFIG } from 'src/global-config';
-     *
-     * element: <Navigate to={CONFIG.auth.redirectPath} replace />,
-     * and remove the element below:
-     */
     element: (
       <Suspense fallback={<SplashScreen />}>
         <MainLayout>
@@ -38,10 +31,13 @@ export const routesSection: RouteObject[] = [
     ),
   },
 
+  // ✅ Public (events)
+  ...makankomPublicRoutes,
+
   // Auth
   ...authRoutes,
   ...authDemoRoutes,
-  ...makankomAuthRoutes, // Add this line
+  ...makankomAuthRoutes, // already here
 
   // Dashboard
   ...dashboardRoutes,

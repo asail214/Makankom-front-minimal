@@ -1,29 +1,17 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
-import App from './app';
-import { routesSection } from './routes/sections';
-import { ErrorBoundary } from './routes/components';
+import Router from 'src/routes/router';
 
-// ----------------------------------------------------------------------
+import App from 'src/app';
 
-const router = createBrowserRouter([
-  {
-    Component: () => (
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter>
       <App>
-        <Outlet />
+        <Router />
       </App>
-    ),
-    errorElement: <ErrorBoundary />,
-    children: routesSection,
-  },
-]);
-
-const root = createRoot(document.getElementById('root')!);
-
-root.render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>
+    </BrowserRouter>
+  </React.StrictMode>
 );
