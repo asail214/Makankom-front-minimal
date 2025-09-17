@@ -1,12 +1,11 @@
-import type { FormEvent } from 'react';
-
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import { useRouter } from 'src/routes/hooks';
+import { useBoolean } from 'src/hooks/use-boolean';
 
 import { Iconify } from 'src/components/iconify';
 import { Form, Field } from 'src/components/hook-form';
@@ -15,110 +14,80 @@ import { useAuthContext } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
 
+type ScanPointSignInValues = {
+  token: string;
+};
+
 export function ScanPointSignInView() {
-  const router = useRouter();
+  const { scanPointLogin } = useAuthContext(); // implement later
 
-  const { scanPointLogin } = useAuthContext();
-
+  const loading = useBoolean(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const [loading, setLoading] = useState(false);
+  const methods = useForm<ScanPointSignInValues>({
+    defaultValues: { token: '' },
+  });
 
-  const onSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      const formData = new FormData(event.currentTarget);
-      const token = formData.get('token') as string;
-
-      if (!token) {
-        setErrorMsg('Please enter your scan point token');
-        return;
-      }
-
-      try {
-        setLoading(true);
-        setErrorMsg('');
-
-        await scanPointLogin(token);
-
-        router.push('/scan/dashboard');
-      } catch (error) {
-        console.error(error);
-        setErrorMsg(
-          typeof error === 'string'
-            ? error
-            : error?.message || 'Invalid token or scan point not found'
-        );
-      } finally {
-        setLoading(false);
-      }
-    },
-    [scanPointLogin, router]
-  );
+  const onSubmit = async (data: ScanPointSignInValues) => {
+    try {
+      loading.onTrue();
+      setErrorMsg('');
+      // TODO: await scanPointLogin(data.token);
+      // route to /scan/dashboard
+    } catch (err: any) {
+      console.error(err);
+      setErrorMsg(err?.message || 'Invalid token or scan point not found');
+    } finally {
+      loading.onFalse();
+    }
+  };
 
   const renderHead = (
     <Box sx={{ textAlign: 'center', mb: 5 }}>
       <Box component="h1" sx={{ typography: 'h3', mb: 1 }}>
-        Scan Point Access
+        Scan Point Login
       </Box>
       <Box sx={{ color: 'text.secondary', typography: 'body2' }}>
-        Enter your scan point token to access the scanning interface
+        Enter the token assigned to this device.
       </Box>
     </Box>
   );
 
   const renderForm = (
-    <Box
-      component="form"
-      onSubmit={onSubmit}
-      sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}
-    >
-      {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
+    <Form methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
+      <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
+        {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 
-      <Field.Text
-        name="token"
-        label="Scan Point Token"
-        placeholder="Enter your scan point access token"
-        InputLabelProps={{ shrink: true }}
-        InputProps={{
-          startAdornment: (
-            <Box sx={{ mr: 1, display: 'flex', alignItems: 'center' }}>
-              <Iconify icon="solar:key-bold" width={20} />
-            </Box>
-          ),
-        }}
-      />
+        <Field.Text
+          name="token"
+          label="Token"
+          InputLabelProps={{ shrink: true }}
+          InputProps={{
+            startAdornment: (
+              <Box sx={{ mr: 1, display: 'flex', alignItems: 'center' }}>
+                <Iconify icon="solar:eye-bold" width={20} />
+              </Box>
+            ),
+          }}
+        />
 
-      <LoadingButton
-        fullWidth
-        color="inherit"
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={loading}
-      >
-        Access scan point
-      </LoadingButton>
-    </Box>
-  );
-
-  const renderNote = (
-    <Box sx={{ mt: 3, p: 2, bgcolor: 'background.neutral', borderRadius: 1, textAlign: 'center' }}>
-      <Box sx={{ typography: 'body2', color: 'text.secondary' }}>
-        <Iconify icon="solar:info-circle-bold" sx={{ mr: 0.5, verticalAlign: 'text-bottom' }} />
-        Contact your event organizer to get your scan point token
+        <LoadingButton
+          type="submit"
+          variant="contained"
+          size="large"
+          loading={loading.value}
+          sx={{ mt: 1.5 }}
+        >
+          Sign in
+        </LoadingButton>
       </Box>
-    </Box>
+    </Form>
   );
 
   return (
     <>
       {renderHead}
-
-      <Form>{renderForm}</Form>
-
-      {renderNote}
+      {renderForm}
     </>
   );
 }

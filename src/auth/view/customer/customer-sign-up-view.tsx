@@ -1,6 +1,5 @@
-import type { FormEvent } from 'react';
-
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -13,12 +12,12 @@ import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
+import { useBoolean } from 'src/hooks/use-boolean';
+
 import { Iconify } from 'src/components/iconify';
 import { Form, Field } from 'src/components/hook-form';
 
 import { useAuthContext } from 'src/auth/hooks';
-
-import { useBoolean } from '../../../../src/hooks/use-boolean';
 
 // ----------------------------------------------------------------------
 
@@ -33,37 +32,29 @@ export function CustomerSignUpView() {
 
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
+  type SignUpValues = {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  };
+  const methods = useForm<SignUpValues>({
+    defaultValues: { name: '', email: '', password: '', confirmPassword: '' },
+  });
 
-      const formData = new FormData(event.currentTarget);
-      const firstName = formData.get('firstName') as string;
-      const lastName = formData.get('lastName') as string;
-      const email = formData.get('email') as string;
-      const password = formData.get('password') as string;
-
-      if (!firstName || !lastName || !email || !password) {
-        setErrorMsg('Please fill in all fields');
-        return;
-      }
-
-      try {
-        setLoading(true);
-        setErrorMsg('');
-
-        await customerRegister(email, password, firstName, lastName);
-
-        router.push('/customer/dashboard');
-      } catch (error) {
-        console.error(error);
-        setErrorMsg(typeof error === 'string' ? error : error?.message || 'Something went wrong!');
-      } finally {
-        setLoading(false);
-      }
-    },
-    [customerRegister, router]
-  );
+  const onSubmit = async (data: SignUpValues) => {
+    try {
+      setLoading(true); // if you already have setLoading
+      setErrorMsg(''); // if you already track error message
+      // call your auth function (we’ll wire real API later)
+      // await customerLogin(data.email, data.password);
+    } catch (err: any) {
+      console.error(err);
+      setErrorMsg(err?.message || 'Something went wrong!');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const renderHead = (
     <Box sx={{ textAlign: 'center', mb: 5 }}>
@@ -145,7 +136,9 @@ export function CustomerSignUpView() {
     <>
       {renderHead}
 
-      <Form>{renderForm}</Form>
+      <Form methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
+        {renderForm}
+      </Form>
     </>
   );
 }

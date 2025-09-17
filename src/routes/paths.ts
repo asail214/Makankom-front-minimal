@@ -71,6 +71,21 @@ export const paths = {
       updatePassword: `${ROOTS.AUTH}/supabase/update-password`,
       resetPassword: `${ROOTS.AUTH}/supabase/reset-password`,
     },
+
+    customer: {
+      signIn: '/login',
+      signUp: '/register',
+    },
+    organizer: {
+      signIn: '/organizer/login',
+      signUp: '/organizer/register',
+    },
+    admin: {
+      signIn: '/admin/login',
+    },
+    scan: {
+      signIn: '/scan/login',
+    },
   },
   authDemo: {
     split: {
