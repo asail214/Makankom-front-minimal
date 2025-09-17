@@ -19,7 +19,7 @@ type ScanPointSignInValues = {
 };
 
 export function ScanPointSignInView() {
-  const { scanPointLogin } = useAuthContext(); // implement later
+  const auth = useAuthContext();
 
   const loading = useBoolean(false);
   const [errorMsg, setErrorMsg] = useState('');

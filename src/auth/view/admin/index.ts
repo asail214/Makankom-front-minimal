@@ -1,1 +1,1 @@
-export { AuthSignInView } from './admin-sign-in-view';
+export { AdminSignInView } from './admin-sign-in-view';

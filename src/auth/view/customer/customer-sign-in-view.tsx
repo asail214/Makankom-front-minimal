@@ -22,9 +22,9 @@ type SignInValues = {
   password: string;
 };
 
-export default function CustomerSignInView() {
+export function CustomerSignInView() {
   const router = useRouter();
-  const { customerLogin } = useAuthContext(); // we’ll wire this later in AuthContext
+  const auth = useAuthContext(); // TODO: use auth.customerLogin later
 
   const loading = useBoolean(false);
   const [errorMsg, setErrorMsg] = useState('');

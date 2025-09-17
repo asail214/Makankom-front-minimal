@@ -24,7 +24,7 @@ type SignInValues = {
 
 export function OrganizerSignInView() {
   const router = useRouter();
-  const { organizerLogin } = useAuthContext(); // implement later
+  const auth = useAuthContext();
 
   const loading = useBoolean(false);
   const [errorMsg, setErrorMsg] = useState('');

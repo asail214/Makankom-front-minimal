@@ -27,7 +27,7 @@ type OrganizerSignUpValues = {
 
 export function OrganizerSignUpView() {
   const router = useRouter();
-  const { organizerRegister } = useAuthContext(); // implement later
+  const auth = useAuthContext();
 
   const loading = useBoolean(false);
   const [errorMsg, setErrorMsg] = useState('');
