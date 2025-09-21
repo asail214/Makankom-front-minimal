@@ -24,6 +24,12 @@ const OverviewBankingPage = lazy(() => import('src/pages/dashboard/banking'));
 const OverviewBookingPage = lazy(() => import('src/pages/dashboard/booking'));
 const OverviewFilePage = lazy(() => import('src/pages/dashboard/file'));
 const OverviewCoursePage = lazy(() => import('src/pages/dashboard/course'));
+
+// Makankom Dashboards
+const CustomerDashboardPage = lazy(() => import('src/pages/dashboard/customer'));
+const CustomerTicketsPage = lazy(() => import('src/pages/dashboard/customer/tickets'));
+const OrganizerDashboardPage = lazy(() => import('src/pages/dashboard/organizer'));
+const EventCreatePage = lazy(() => import('src/pages/dashboard/organizer/events/create'));
 // Product
 const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/details'));
 const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'));
@@ -205,6 +211,11 @@ export const dashboardRoutes: RouteObject[] = [
       { path: 'permission', element: <PermissionDeniedPage /> },
       { path: 'params', element: <ParamsPage /> },
       { path: 'blank', element: <BlankPage /> },
+      // Makankom Dashboards
+      { path: 'customer', element: <CustomerDashboardPage /> },
+      { path: 'customer/tickets', element: <CustomerTicketsPage /> },
+      { path: 'organizer', element: <OrganizerDashboardPage /> },
+      { path: 'organizer/events/create', element: <EventCreatePage /> },
       {
         path: 'subpaths',
         children: [

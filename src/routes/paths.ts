@@ -212,10 +212,12 @@ export const paths = {
   organizer: {
     root: ROOTS.ORGANIZER,
     profile: `${ROOTS.ORGANIZER}/profile`,
-    events: `${ROOTS.ORGANIZER}/events`,
-    eventNew: `${ROOTS.ORGANIZER}/events/new`,
-    eventDetails: (id: string) => `${ROOTS.ORGANIZER}/events/${id}`,
-    eventEdit: (id: string) => `${ROOTS.ORGANIZER}/events/${id}/edit`,
+    events: {
+      root: `${ROOTS.ORGANIZER}/events`,
+      create: `${ROOTS.ORGANIZER}/events/create`,
+      details: (slug: string) => `${ROOTS.ORGANIZER}/events/${slug}`,
+      edit: (slug: string) => `${ROOTS.ORGANIZER}/events/${slug}/edit`,
+    },
     analytics: `${ROOTS.ORGANIZER}/analytics`,
     brands: `${ROOTS.ORGANIZER}/brands`,
     scanPoints: `${ROOTS.ORGANIZER}/scan-points`,

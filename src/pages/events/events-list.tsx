@@ -19,7 +19,7 @@ import {
   Skeleton,
   Alert
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import { Grid } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -185,7 +185,7 @@ export default function EventsListPage() {
       {loading ? (
         <Grid container spacing={3}>
           {[...Array(6)].map((_, index) => (
-            <Grid xs={12} sm={6} md={4} key={index}>
+            <Grid item xs={12} sm={6} md={4} key={index}>
               <Card>
                 <Skeleton variant="rectangular" height={200} />
                 <CardContent>
@@ -201,7 +201,7 @@ export default function EventsListPage() {
         <>
           <Grid container spacing={3}>
             {events.map((event) => (
-              <Grid xs={12} sm={6} md={4} key={event.id}>
+              <Grid item xs={12} sm={6} md={4} key={event.id}>
                 <Card
                   sx={{
                     height: '100%',

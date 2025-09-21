@@ -10,6 +10,7 @@ import { SplashScreen } from 'src/components/loading-screen';
 const EventsPage = lazy(() => import('src/pages/events/events-list'));
 const EventDetailsPage = lazy(() => import('src/pages/events/event-details'));
 const EventCategoryPage = lazy(() => import('src/pages/events/event-category'));
+const EventBookingPage = lazy(() => import('src/pages/events/event-booking'));
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,16 @@ export default [
       <Suspense fallback={<SplashScreen />}>
         <MainLayout>
           <EventCategoryPage />
+        </MainLayout>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/events/:slug/book',
+    element: (
+      <Suspense fallback={<SplashScreen />}>
+        <MainLayout>
+          <EventBookingPage />
         </MainLayout>
       </Suspense>
     ),

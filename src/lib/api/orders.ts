@@ -1,12 +1,6 @@
+import type { Order, OrderCreateRequest } from 'src/types/order';
+
 import axiosInstance, { endpoints } from 'src/lib/axios';
-import type { 
-  Order, 
-  OrderCreateRequest, 
-  OrderSummaryRequest, 
-  OrderSummary, 
-  PaymentRequest,
-  Payment 
-} from 'src/types/order';
 
 // ----------------------------------------------------------------------
 
@@ -21,16 +15,26 @@ export const ordersApi = {
   createOrder: (data: OrderCreateRequest) => 
     axiosInstance.post(endpoints.customer.orders, data),
 
-  getOrderSummary: (data: OrderSummaryRequest) => 
-    axiosInstance.post('/customer/orders/summary', data),
-
   cancelOrder: (id: number) => 
     axiosInstance.post(`${endpoints.customer.orderDetails(id)}/cancel`),
 
-  // Payment endpoints
-  getPaymentHistory: () => 
-    axiosInstance.get('/customer/payments'),
+  getOrderSummary: (data: { items: Array<{ ticket_type_id: number; quantity: number }> }) => 
+    axiosInstance.post(`${endpoints.customer.orders}/summary`, data),
 
-  processPayment: (data: PaymentRequest) => 
-    axiosInstance.post(endpoints.customer.createPayment, data),
+  // Admin endpoints
+  getAllOrders: (filters?: { status?: string; from?: string; to?: string }) => {
+    const params = new URLSearchParams();
+    
+    if (filters?.status) params.append('status', filters.status);
+    if (filters?.from) params.append('from', filters.from);
+    if (filters?.to) params.append('to', filters.to);
+    
+    const queryString = params.toString();
+    const url = queryString ? `${endpoints.admin.orders}?${queryString}` : endpoints.admin.orders;
+    
+    return axiosInstance.get(url);
+  },
+
+  getOrderAnalytics: () => 
+    axiosInstance.get(`${endpoints.admin.orders}/analytics`),
 };

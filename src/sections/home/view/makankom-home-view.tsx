@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'src/routes/hooks';
-import { useTheme } from '@mui/material/styles';
+
+import { useTheme, alpha } from '@mui/material/styles';
 import { Container, Typography, Box, Button, Card, CardContent, CardMedia, Chip, Stack } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+
+import type { Event, EventCategory } from 'src/types/event';
 
 import { paths } from 'src/routes/paths';
+import { useNavigate } from 'src/routes/hooks';
 import { useAuthContext } from 'src/auth/hooks';
-import type { Event, EventCategory } from 'src/types/event';
+import { eventsApi } from 'src/lib/api/events';
 
 // Temporary mock data - replace with actual API calls when ready
 const mockEvents: Event[] = [];
@@ -35,12 +37,19 @@ export function MakankomHomeView() {
       try {
         setLoading(true);
         
-        // For now, use mock data
-        // TODO: Replace with actual API calls when backend is connected
-        setFeaturedEvents(mockEvents);
-        setCategories(mockCategories);
+        // Fetch real data from API
+        const [eventsResponse, categoriesResponse] = await Promise.all([
+          eventsApi.getEvents({ is_featured: true, per_page: 6 }),
+          eventsApi.getCategories(),
+        ]);
+        
+        setFeaturedEvents(eventsResponse.data.data || []);
+        setCategories(categoriesResponse.data.data || []);
       } catch (error) {
         console.error('Error fetching home data:', error);
+        // Fallback to mock data if API fails
+        setFeaturedEvents(mockEvents);
+        setCategories(mockCategories);
       } finally {
         setLoading(false);
       }
