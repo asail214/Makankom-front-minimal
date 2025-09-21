@@ -1,4 +1,4 @@
-import { HomeView } from 'src/sections/home/view';
+import { MakankomHomeView } from 'src/sections/home/view';
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ export default function Page() {
       <title>{metadata.title}</title>
       <meta name="description" content={metadata.description} />
 
-      <HomeView />
+      <MakankomHomeView />
     </>
   );
 }

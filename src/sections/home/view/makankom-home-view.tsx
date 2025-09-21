@@ -2,13 +2,22 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'src/routes/hooks';
 import { useTheme } from '@mui/material/styles';
 import { Container, Typography, Box, Button, Card, CardContent, CardMedia, Chip, Stack } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 import { alpha } from '@mui/material/styles';
 
 import { paths } from 'src/routes/paths';
-import { eventsApi } from 'src/lib/api/events';
 import { useAuthContext } from 'src/auth/hooks';
 import type { Event, EventCategory } from 'src/types/event';
+
+// Temporary mock data - replace with actual API calls when ready
+const mockEvents: Event[] = [];
+const mockCategories: EventCategory[] = [
+  { id: 1, name: 'Music', slug: 'music', description: 'Live music events and concerts', icon: '🎵', color: '#6C5CE7', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
+  { id: 2, name: 'Sports', slug: 'sports', description: 'Sports events and competitions', icon: '⚽', color: '#00B894', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
+  { id: 3, name: 'Business', slug: 'business', description: 'Professional and business events', icon: '💼', color: '#0984E3', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
+  { id: 4, name: 'Arts', slug: 'arts', description: 'Art exhibitions and cultural events', icon: '🎨', color: '#E17055', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
+  { id: 5, name: 'Technology', slug: 'technology', description: 'Tech conferences and workshops', icon: '💻', color: '#A29BFE', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
+  { id: 6, name: 'Food', slug: 'food', description: 'Food festivals and culinary events', icon: '🍽️', color: '#FDCB6E', created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z' },
+];
 
 // ----------------------------------------------------------------------
 
@@ -26,18 +35,10 @@ export function MakankomHomeView() {
       try {
         setLoading(true);
         
-        // Fetch featured events
-        const eventsResponse = await eventsApi.getEvents({ 
-          status: 'published',
-          is_featured: true,
-          per_page: 6 
-        });
-        
-        // Fetch categories
-        const categoriesResponse = await eventsApi.getCategories();
-        
-        setFeaturedEvents(eventsResponse.data.data || []);
-        setCategories(categoriesResponse.data.data || []);
+        // For now, use mock data
+        // TODO: Replace with actual API calls when backend is connected
+        setFeaturedEvents(mockEvents);
+        setCategories(mockCategories);
       } catch (error) {
         console.error('Error fetching home data:', error);
       } finally {
@@ -164,9 +165,19 @@ export function MakankomHomeView() {
           Event Categories
         </Typography>
         
-        <Grid container spacing={3}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(3, 1fr)',
+            },
+            gap: 3,
+          }}
+        >
           {categories.slice(0, 6).map((category) => (
-            <Grid xs={12} sm={6} md={4} key={category.id}>
+            <Box key={category.id}>
               <Card
                 sx={{
                   height: '100%',
@@ -207,9 +218,9 @@ export function MakankomHomeView() {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </Container>
 
       {/* Featured Events Section */}
@@ -219,9 +230,19 @@ export function MakankomHomeView() {
             Featured Events
           </Typography>
           
-          <Grid container spacing={4}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: '1fr',
+                sm: 'repeat(2, 1fr)',
+                md: 'repeat(3, 1fr)',
+              },
+              gap: 4,
+            }}
+          >
             {featuredEvents.map((event) => (
-              <Grid xs={12} sm={6} md={4} key={event.id}>
+              <Box key={event.id}>
                 <Card
                   sx={{
                     height: '100%',
@@ -283,9 +304,9 @@ export function MakankomHomeView() {
                     </Typography>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
           
           {featuredEvents.length === 0 && !loading && (
             <Box sx={{ textAlign: 'center', py: 4 }}>
