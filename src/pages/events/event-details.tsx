@@ -14,7 +14,7 @@ import {
   Alert,
   Skeleton
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Unstable_Grid2';
 import { Iconify } from 'src/components/iconify';
 
 import { paths } from 'src/routes/paths';

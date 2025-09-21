@@ -77,8 +77,8 @@ export const paths = {
     },
 
     customer: {
-      signIn: '/login',
-      signUp: '/register',
+      signIn: '/customer/login',
+      signUp: '/customer/register',
     },
     organizer: {
       signIn: '/organizer/login',

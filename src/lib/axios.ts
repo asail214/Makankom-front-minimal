@@ -1,5 +1,9 @@
 import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
 
+//import { HOST_API } from '@/global-config';
+
+//import i18n from '@/locales';    
+
 import { CONFIG } from 'src/global-config';
 
 /**
@@ -10,6 +14,7 @@ import { CONFIG } from 'src/global-config';
 const axiosInstance = axios.create({
   baseURL: CONFIG.serverUrl, // e.g. http://127.0.0.1:8000/api  (from .env -> VITE_SERVER_URL)
   headers: { 'Content-Type': 'application/json' },
+
 });
 
 /**

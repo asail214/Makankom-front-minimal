@@ -16,10 +16,13 @@ export const eventsApi = {
     if (filters?.to) params.append('to', filters.to);
     if (filters?.q) params.append('q', filters.q);
     if (filters?.page) params.append('page', filters.page.toString());
-    
+    // ⬇️ ADD THESE TWO LINES
+    if (filters?.per_page) params.append('per_page', filters.per_page.toString());
+    if (filters?.is_featured !== undefined) params.append('is_featured', filters.is_featured ? '1' : '0');
+
     const queryString = params.toString();
     const url = queryString ? `${endpoints.public.events}?${queryString}` : endpoints.public.events;
-    
+
     return axiosInstance.get(url);
   },
 

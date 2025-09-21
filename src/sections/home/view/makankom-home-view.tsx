@@ -38,13 +38,37 @@ export function MakankomHomeView() {
         setLoading(true);
         
         // Fetch real data from API
-        const [eventsResponse, categoriesResponse] = await Promise.all([
+        const [eventsRes, catsRes] = await Promise.all([
           eventsApi.getEvents({ is_featured: true, per_page: 6 }),
           eventsApi.getCategories(),
         ]);
         
-        setFeaturedEvents(eventsResponse.data.data || []);
-        setCategories(categoriesResponse.data.data || []);
+        // ---- Events normalization ----
+        // Accept any of these shapes:
+        // 1) [ ... ] 
+        // 2) { data: [ ... ] } 
+        // 3) { data: { data: [ ... ], meta: {...} } }  (Laravel pagination)
+        const evRaw = eventsRes?.data?.data ?? eventsRes?.data ?? [];
+        const evList = Array.isArray(evRaw)
+          ? evRaw
+          : Array.isArray(evRaw?.data)
+            ? evRaw.data
+            : Array.isArray(evRaw?.items)
+              ? evRaw.items
+              : [];
+        setFeaturedEvents(evList);
+        
+        // ---- Categories normalization ----
+        const catRaw = catsRes?.data?.data ?? catsRes?.data ?? [];
+        const catList = Array.isArray(catRaw)
+          ? catRaw
+          : Array.isArray(catRaw?.data)
+            ? catRaw.data
+            : Array.isArray(catRaw?.items)
+              ? catRaw.items
+              : [];
+        setCategories(catList);
+
       } catch (error) {
         console.error('Error fetching home data:', error);
         // Fallback to mock data if API fails
@@ -250,7 +274,7 @@ export function MakankomHomeView() {
               gap: 4,
             }}
           >
-            {featuredEvents.map((event) => (
+            {(Array.isArray(featuredEvents) ? featuredEvents : []).map((event) => (
               <Box key={event.id}>
                 <Card
                   sx={{

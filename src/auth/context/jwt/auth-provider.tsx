@@ -99,8 +99,35 @@ export default function JwtAuthProvider({ children }: { children: React.ReactNod
         setUser(null);
         return;
       }
-      // Choose whatever “me” makes sense (customer by default)
-      const me = await fetchMe(endpoints.auth.me ?? endpoints.customer.profile);
+  
+      // Try each “me/profile” endpoint until one succeeds.
+      // Order: customer → organizer → admin → scan
+      const candidates = [
+        { url: endpoints.customer.profile, role: 'customer' as const },
+        { url: endpoints.organizer.profile, role: 'organizer' as const },
+        { url: endpoints.admin.profile, role: 'admin' as const },
+        { url: endpoints.scan.profile, role: 'scan' as const },
+      ];
+  
+      let me: AuthUser | null = null;
+  
+      for (const c of candidates) {
+        try {
+          const u = await fetchMe(c.url);
+          me = { ...u, role: c.role };
+          break;
+        } catch {
+          // try next
+        }
+      }
+  
+      if (!me) {
+        // token exists but invalid for all roles
+        setSession(null);
+        setUser(null);
+        return;
+      }
+  
       setUser(me);
     } catch {
       setSession(null);
@@ -109,15 +136,29 @@ export default function JwtAuthProvider({ children }: { children: React.ReactNod
       setLoading(false);
     }
   }, []);
+  
 
   // ---------- Customer ----------
   const customerLogin = useCallback(async (email: string, password: string) => {
     const res = await axios.post(endpoints.customer.login, { email, password });
-    const { accessToken } = res.data;
-    setSession(accessToken);
+  
+    // robust extraction across possible shapes
+    const token =
+      res?.data?.data?.token ??
+      res?.data?.token ??
+      res?.data?.accessToken ??
+      null;
+  
+    if (!token) throw new Error('Token missing from login response');
+  
+    setSession(token);
+  
+    // You could read res.data.data.customer here,
+    // but using /customer/profile keeps it consistent.
     const me = await fetchMe(endpoints.customer.profile);
     setUser({ ...me, role: 'customer' });
   }, []);
+  
 
   const customerRegister = useCallback(async (payload: any) => {
     await axios.post(endpoints.customer.register, payload);
@@ -128,11 +169,20 @@ export default function JwtAuthProvider({ children }: { children: React.ReactNod
   // ---------- Organizer ----------
   const organizerLogin = useCallback(async (email: string, password: string) => {
     const res = await axios.post(endpoints.organizer.login, { email, password });
-    const { accessToken } = res.data;
-    setSession(accessToken);
+  
+    const token =
+      res?.data?.data?.token ??
+      res?.data?.token ??
+      res?.data?.accessToken ??
+      null;
+  
+    if (!token) throw new Error('Token missing from login response');
+  
+    setSession(token);
     const me = await fetchMe(endpoints.organizer.profile);
     setUser({ ...me, role: 'organizer' });
   }, []);
+  
 
   const organizerRegister = useCallback(async (payload: any) => {
     await axios.post(endpoints.organizer.register, payload);
@@ -141,20 +191,38 @@ export default function JwtAuthProvider({ children }: { children: React.ReactNod
   // ---------- Admin ----------
   const adminLogin = useCallback(async (email: string, password: string) => {
     const res = await axios.post(endpoints.admin.login, { email, password });
-    const { accessToken } = res.data;
-    setSession(accessToken);
+  
+    const token =
+      res?.data?.data?.token ??
+      res?.data?.token ??
+      res?.data?.accessToken ??
+      null;
+  
+    if (!token) throw new Error('Token missing from login response');
+  
+    setSession(token);
     const me = await fetchMe(endpoints.admin.profile);
     setUser({ ...me, role: 'admin' });
   }, []);
+  
 
   // ---------- Scan Point ----------
-  const scanPointLogin = useCallback(async (token: string) => {
-    const res = await axios.post(endpoints.scan.login, { token });
-    const { accessToken } = res.data;
-    setSession(accessToken);
+  const scanPointLogin = useCallback(async (deviceToken: string) => {
+    const res = await axios.post(endpoints.scan.login, { token: deviceToken });
+  
+    const token =
+      res?.data?.data?.token ??
+      res?.data?.token ??
+      res?.data?.accessToken ??
+      null;
+  
+    if (!token) throw new Error('Token missing from login response');
+  
+    setSession(token);
     const me = await fetchMe(endpoints.scan.profile);
     setUser({ ...me, role: 'scan' });
   }, []);
+  
 
   const logout = useCallback(async () => {
     try {
