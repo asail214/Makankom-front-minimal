@@ -65,7 +65,7 @@ export function OrderDetailsHistory({ history }: Props) {
         [`& .${timelineItemClasses.root}:before`]: { flex: 0, padding: 0 },
       }}
     >
-      {history?.timeline.map((item, index) => {
+      {history?.timeline.map((item: any, index: number) => {
         const firstTime = index === 0;
         const lastTime = index === history.timeline.length - 1;
 

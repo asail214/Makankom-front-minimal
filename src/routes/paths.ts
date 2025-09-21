@@ -11,6 +11,10 @@ const ROOTS = {
   AUTH: '/auth',
   AUTH_DEMO: '/auth-demo',
   DASHBOARD: '/dashboard',
+  CUSTOMER: '/dashboard/customer',
+  ORGANIZER: '/dashboard/organizer',
+  ADMIN: '/dashboard/admin',
+  SCAN_POINT: '/dashboard/scan-point',
 };
 
 // ----------------------------------------------------------------------
@@ -187,5 +191,53 @@ export const paths = {
         edit: `${ROOTS.DASHBOARD}/tour/${MOCK_ID}/edit`,
       },
     },
+  },
+  // MAKANKOM SPECIFIC ROUTES
+  events: {
+    root: '/events',
+    details: (slug: string) => `/events/${slug}`,
+    category: (categorySlug: string) => `/events/category/${categorySlug}`,
+  },
+  // Customer Dashboard
+  customer: {
+    root: ROOTS.CUSTOMER,
+    profile: `${ROOTS.CUSTOMER}/profile`,
+    orders: `${ROOTS.CUSTOMER}/orders`,
+    orderDetails: (id: string) => `${ROOTS.CUSTOMER}/orders/${id}`,
+    tickets: `${ROOTS.CUSTOMER}/tickets`,
+    ticketDetails: (id: string) => `${ROOTS.CUSTOMER}/tickets/${id}`,
+    wishlist: `${ROOTS.CUSTOMER}/wishlist`,
+  },
+  // Organizer Dashboard
+  organizer: {
+    root: ROOTS.ORGANIZER,
+    profile: `${ROOTS.ORGANIZER}/profile`,
+    events: `${ROOTS.ORGANIZER}/events`,
+    eventNew: `${ROOTS.ORGANIZER}/events/new`,
+    eventDetails: (id: string) => `${ROOTS.ORGANIZER}/events/${id}`,
+    eventEdit: (id: string) => `${ROOTS.ORGANIZER}/events/${id}/edit`,
+    analytics: `${ROOTS.ORGANIZER}/analytics`,
+    brands: `${ROOTS.ORGANIZER}/brands`,
+    scanPoints: `${ROOTS.ORGANIZER}/scan-points`,
+  },
+  // Admin Dashboard
+  admin: {
+    root: ROOTS.ADMIN,
+    profile: `${ROOTS.ADMIN}/profile`,
+    events: `${ROOTS.ADMIN}/events`,
+    eventDetails: (id: string) => `${ROOTS.ADMIN}/events/${id}`,
+    pendingEvents: `${ROOTS.ADMIN}/events/pending`,
+    organizers: `${ROOTS.ADMIN}/organizers`,
+    organizerDetails: (id: string) => `${ROOTS.ADMIN}/organizers/${id}`,
+    reports: `${ROOTS.ADMIN}/reports`,
+    categories: `${ROOTS.ADMIN}/categories`,
+  },
+  // Scan Point Dashboard
+  scanPoint: {
+    root: ROOTS.SCAN_POINT,
+    profile: `${ROOTS.SCAN_POINT}/profile`,
+    scanner: `${ROOTS.SCAN_POINT}/scanner`,
+    history: `${ROOTS.SCAN_POINT}/history`,
+    stats: (eventId: string) => `${ROOTS.SCAN_POINT}/stats/${eventId}`,
   },
 };

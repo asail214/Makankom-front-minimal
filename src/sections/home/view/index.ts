@@ -1,1 +1,1 @@
-export * from './home-view';
+export { MakankomHomeView as HomeView } from './makankom-home-view';

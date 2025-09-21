@@ -3,9 +3,9 @@ import { HomeView } from 'src/sections/home/view';
 // ----------------------------------------------------------------------
 
 const metadata = {
-  title: 'Minimals UI: The starting point for your next project',
+  title: 'Makankom - Your Premier Event Platform in Oman',
   description:
-    'The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style',
+    'Discover, book, and manage events in Oman with Makankom. From concerts to conferences, find your perfect event and secure your tickets with ease.',
 };
 
 export default function Page() {

@@ -32,8 +32,8 @@ export type ConfigValue = {
 export const CONFIG: ConfigValue = {
   appName: 'Makankom',
   appVersion: '1.0.0',
-  serverUrl: import.meta.env.VITE_SERVER_URL ?? '',
-  assetsDir: import.meta.env.VITE_ASSETS_DIR ?? '',
+  serverUrl: import.meta.env.VITE_SERVER_URL ?? 'http://localhost:8000/api',
+  assetsDir: import.meta.env.VITE_ASSETS_DIR ?? '/assets',
   auth: {
     method: 'jwt', // Using JWT for Laravel Sanctum
     skip: false,

@@ -140,7 +140,7 @@ export function OrderTableRow({ row, selected, onSelectRow, onDeleteRow, details
           sx={{ bgcolor: 'background.neutral' }}
         >
           <Paper sx={{ m: 1.5 }}>
-            {row.items.map((item) => (
+            {row.items.map((item: any) => (
               <Box
                 key={item.id}
                 sx={(theme) => ({

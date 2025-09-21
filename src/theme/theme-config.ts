@@ -42,23 +42,23 @@ export const themeConfig: ThemeConfig = {
     secondary: 'Barlow',
   },
   /** **************************************
-   * Palette
+   * Palette - Makankom Professional Colors
    *************************************** */
   palette: {
     primary: {
-      lighter: '#C8FAD6',
-      light: '#5BE49B',
-      main: '#00A76F',
-      dark: '#007867',
-      darker: '#004B50',
+      lighter: '#E3F2FD',
+      light: '#64B5F6',
+      main: '#1976D2', // Professional blue for trust and reliability
+      dark: '#1565C0',
+      darker: '#0D47A1',
       contrastText: '#FFFFFF',
     },
     secondary: {
-      lighter: '#EFD6FF',
-      light: '#C684FF',
-      main: '#8E33FF',
-      dark: '#5119B7',
-      darker: '#27097A',
+      lighter: '#FFF3E0',
+      light: '#FFB74D',
+      main: '#FF9800', // Warm orange for energy and events
+      dark: '#F57C00',
+      darker: '#E65100',
       contrastText: '#FFFFFF',
     },
     info: {

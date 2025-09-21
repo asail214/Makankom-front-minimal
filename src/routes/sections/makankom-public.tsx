@@ -1,22 +1,48 @@
-// src/routes/sections/makankom-public.tsx
 import type { RouteObject } from 'react-router';
-
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 
 import { MainLayout } from 'src/layouts/main';
+import { SplashScreen } from 'src/components/loading-screen';
 
-const EventsListPage = lazy(() => import('src/pages/events'));
-const EventDetailsPage = lazy(() => import('src/pages/events/details'));
+// ----------------------------------------------------------------------
 
-const makankomPublicRoutes: RouteObject[] = [
+// Lazy load public pages
+const EventsPage = lazy(() => import('src/pages/events/events-list'));
+const EventDetailsPage = lazy(() => import('src/pages/events/event-details'));
+const EventCategoryPage = lazy(() => import('src/pages/events/event-category'));
+
+// ----------------------------------------------------------------------
+
+export default [
+  // Public Events
   {
-    path: '/',
-    element: <MainLayout />,
-    children: [
-      { path: 'events', element: <EventsListPage /> },
-      { path: 'events/:id', element: <EventDetailsPage /> },
-    ],
+    path: '/events',
+    element: (
+      <Suspense fallback={<SplashScreen />}>
+        <MainLayout>
+          <EventsPage />
+        </MainLayout>
+      </Suspense>
+    ),
   },
-];
-
-export default makankomPublicRoutes;
+  {
+    path: '/events/:slug',
+    element: (
+      <Suspense fallback={<SplashScreen />}>
+        <MainLayout>
+          <EventDetailsPage />
+        </MainLayout>
+      </Suspense>
+    ),
+  },
+  {
+    path: '/events/category/:categorySlug',
+    element: (
+      <Suspense fallback={<SplashScreen />}>
+        <MainLayout>
+          <EventCategoryPage />
+        </MainLayout>
+      </Suspense>
+    ),
+  },
+] satisfies RouteObject[];
