@@ -119,8 +119,8 @@ export function AccountDrawer({ data = [], sx, ...other }: AccountDrawerProps) {
     <>
       <AccountButton
         onClick={onOpen}
-        photoURL={user?.photoURL}
-        displayName={user?.displayName}
+        photoURL={user?.photoURL ?? ''}            // ⟵ default to empty string
+        displayName={user?.displayName ?? 'Account'} // ⟵ default label
         sx={sx}
         {...other}
       />
